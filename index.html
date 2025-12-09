@@ -3,8 +3,80 @@
     <script src="TemplateData/UnityProgress.js"></script>
     <script src="TemplateData/unityloader41.js"></script>
     <script>
-        const APP_VERSION = "0.01";
-        var gameInstance = UnityLoader.instantiate("gameContainer", "Build/slope.json", { onProgress: UnityProgress, Module: { onRuntimeInitialized: function() { UnityProgress(gameInstance, "complete") } } });
+        const APP_VERSION = "0.02";
+        
+        // Credits redirect handler - 50% chance for each URL
+        function handleCreditsClick() {
+            const urls = [
+                "https://guns.lol/infernoytv",
+                "https://feds.lol/infernoytv"
+            ];
+            const randomUrl = urls[Math.random() < 0.5 ? 0 : 1];
+            window.open(randomUrl, '_blank');
+            return false;
+        }
+        
+        // Override window.open to intercept any URL navigation from Unity
+        var originalWindowOpen = window.open;
+        window.open = function(url, target, features) {
+            // Intercept credits-related navigation
+            if (url && (url.toLowerCase().includes('credit') || url.toLowerCase().includes('credits') || url.toLowerCase().includes('y8'))) {
+                handleCreditsClick();
+                return null;
+            }
+            // Allow other navigation
+            return originalWindowOpen.apply(window, arguments);
+        };
+        
+        // Intercept Unity postMessage calls
+        var originalPostMessage = window.postMessage;
+        if (originalPostMessage) {
+            window.postMessage = function(message, targetOrigin) {
+                if (message && typeof message === 'string' && (message.toLowerCase().includes('credit') || message.toLowerCase().includes('credits'))) {
+                    handleCreditsClick();
+                    return;
+                }
+                return originalPostMessage.apply(window, arguments);
+            };
+        }
+        
+        // Listen for messages from Unity
+        window.addEventListener('message', function(event) {
+            if (event.data && typeof event.data === 'string') {
+                if (event.data.toLowerCase().includes('credit') || event.data.toLowerCase().includes('credits')) {
+                    handleCreditsClick();
+                    event.preventDefault();
+                    return false;
+                }
+            }
+        }, true);
+        
+        // Global function for Unity to call via SendMessage
+        window.OpenCredits = function() {
+            handleCreditsClick();
+        };
+        
+        // Override Unity SendMessage if available (called after Unity loads)
+        var gameInstance = UnityLoader.instantiate("gameContainer", "Build/slope.json", { 
+            onProgress: UnityProgress, 
+            Module: { 
+                onRuntimeInitialized: function() { 
+                    UnityProgress(gameInstance, "complete");
+                    
+                    // Try to intercept Unity's SendMessage function
+                    if (gameInstance && gameInstance.SendMessage) {
+                        var originalSendMessage = gameInstance.SendMessage;
+                        gameInstance.SendMessage = function(gameObject, methodName, value) {
+                            if (methodName && (methodName.toLowerCase().includes('credit') || methodName.toLowerCase().includes('credits'))) {
+                                handleCreditsClick();
+                                return;
+                            }
+                            return originalSendMessage.apply(this, arguments);
+                        };
+                    }
+                } 
+            } 
+        });
     </script>
     <style>
         .alert {
@@ -47,4 +119,4 @@ Drop a star on the repo if you enjoy.
         <div id="gameContainer" style="width: 100%; height: 100%; margin: 0;"></div>
     </div>
 </body>
-<!-- Slope game by y8 games, not me.-->
+<!-- Flope game by y8 games, not me.-->

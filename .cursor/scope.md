@@ -1,13 +1,13 @@
-# Slope Game - Complete Scope Description
+# Flope Game - Complete Scope Description
 
 ## Game Overview
 
-Slope is a popular 3D endless runner game built with Unity WebGL. The game features a ball rolling down an infinite slope, where players must navigate obstacles and avoid falling off the edges to achieve the highest score possible.
+Flope is a popular 3D endless runner game built with Unity WebGL. The game features a ball rolling down an infinite slope, where players must navigate obstacles and avoid falling off the edges to achieve the highest score possible.
 
 ## Core Gameplay Mechanics
 
 ### Objective
-- Navigate a ball down an infinite 3D slope
+- Navigate a ball down an infinite 3D flope
 - Avoid obstacles and falling off the edges
 - Survive as long as possible to achieve a high score
 - The game ends when the ball falls off the slope or hits an obstacle
@@ -18,7 +18,7 @@ Slope is a popular 3D endless runner game built with Unity WebGL. The game featu
 - Responsive controls allow for precise navigation
 
 ### Game Features
-- **Endless Slope**: Procedurally generated or infinite slope that continues indefinitely
+- **Endless Flope**: Procedurally generated or infinite flope that continues indefinitely
 - **3D Graphics**: WebGL-based 3D rendering for immersive gameplay
 - **Obstacle Avoidance**: Various obstacles and hazards to navigate around
 - **Score System**: Score increases based on distance traveled or time survived
@@ -50,7 +50,7 @@ Slope is a popular 3D endless runner game built with Unity WebGL. The game featu
 
 ### Build Configuration
 - **Company**: IDnet
-- **Product Name**: Slope
+- **Product Name**: Flope
 - **Total Memory**: 268MB (268435456 bytes)
 - **Graphics API**: WebGL 2.0 (with WebGL 1.0 fallback)
 - **Splash Screen**: Dark theme
@@ -141,7 +141,7 @@ Slope is a popular 3D endless runner game built with Unity WebGL. The game featu
 
 ## Notes
 
-- Original game concept by y8 games
+- Original game concept by y8 games (Slope)
 - This is a web-hostable version designed to bypass website restrictions
 - Built for easy deployment and accessibility
 - No external dependencies beyond Unity WebGL runtime

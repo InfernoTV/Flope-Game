@@ -1,7 +1,7 @@
 
-# Slope Game </a>![Badge](https://hitscounter.dev/api/hit?url=https%3A%2F%2Fgithub.com%2Fcgolden15%2FSlope-Game%3Ftab%3Dreadme-ov-file&label=Visits&icon=github&color=%23198754&message=&style=flat&tz=US%2FEastern)
+# Flope Game </a>![Badge](https://hitscounter.dev/api/hit?url=https%3A%2F%2Fgithub.com%2Fcgolden15%2FSlope-Game%3Ftab%3Dreadme-ov-file&label=Visits&icon=github&color=%23198754&message=&style=flat&tz=US%2FEastern)
 
-Copy of the popular slope game designed to be hosted anywhere to bypass website restrictions! Below I will cover two free and easy methods to clone and host this yourself, however if you wish to play, use either of the following links. If you use this repo, please star it so others can find it, and so I can see if yall want more! If this helped you, consider [Buying me a coffee](https://www.buymeacoffee.com/goldenn15)
+Copy of the popular flope game designed to be hosted anywhere to bypass website restrictions! Below I will cover two free and easy methods to clone and host this yourself, however if you wish to play, use either of the following links. If you use this repo, please star it so others can find it, and so I can see if yall want more! If this helped you, consider [Buying me a coffee](https://www.buymeacoffee.com/goldenn15)
 
 __**IMPORTANT:**__ If your fork gets blocked, simply change the name of your repository and it should work!
 

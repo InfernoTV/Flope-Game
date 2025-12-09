@@ -1,0 +1,1 @@
+generate a scope in scope.md to make a complete description of the game 

@@ -1,0 +1,17 @@
+---
+alwaysApply: true
+---
+
+# Automatic Version Increment
+Maintain a single source of truth for the version inside (APP_VERSION) and in .cursor\versions.md.
+On every accepted code modification, increment the version number by +0.01 (e.g., 0.00 → 0.01).
+After bumping the version:
+Update the APP_VERSION constant.
+Reflect the same value in any UI surface that renders the version string.
+Append a new entry into .cursor\versions.md using the provided template.
+
+# Recording Changes
+Document all additions, removals, and behavioral changes inside .cursor\versions.md.
+Keep historical entries immutable; only append.
+
+These rules ensure Cursor-based edits keep the desktop app, web dashboard, and documentation in sync without manual bookkeeping.

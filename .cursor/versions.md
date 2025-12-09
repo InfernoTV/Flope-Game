@@ -1,5 +1,34 @@
 # Version History
 
+## Version 0.03 - UI Overlay System and Color Filtering
+**Date**: 2024
+
+### Changes
+- **Added**: CSS overlay system to hide UI elements (feedback, download, more games, leaderboard, login buttons)
+- **Added**: Click blocking system to prevent interactions with hidden UI elements
+- **Added**: Color filter to transform green colors to light pastel pink using CSS filters
+- **Added**: Enhanced Unity SendMessage interception to block leaderboard, login, feedback, download, and more games calls
+- **Added**: Canvas click event interception to block clicks in UI element areas
+- **Updated**: Overlay positioning system with adjustable coordinates
+
+### Technical Details
+- Transparent overlay divs positioned over UI element areas
+- CSS `hue-rotate`, `saturate`, and `brightness` filters applied to Unity canvas
+- Event propagation blocking on overlay elements
+- Coordinate-based click blocking for Unity canvas
+- Multiple interception layers for maximum coverage
+
+### Configuration
+- Overlay positions can be adjusted in CSS (`.overlay-*` classes)
+- Color filter intensity can be modified in `.pink-filter` class
+- Click blocking coordinates can be adjusted in the canvas click handler
+
+### Limitations
+- Overlays hide elements but don't remove them from Unity's rendering
+- Color filter affects entire canvas (may need fine-tuning)
+- Overlay positions may need adjustment for different screen sizes
+- For complete removal, Unity source project is still required
+
 ## Version 0.02 - UI Customization and Credits Redirect
 **Date**: 2024
 

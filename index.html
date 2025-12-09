@@ -3,7 +3,7 @@
     <script src="TemplateData/UnityProgress.js"></script>
     <script src="TemplateData/unityloader41.js"></script>
     <script>
-        const APP_VERSION = "0.02";
+        const APP_VERSION = "0.03";
         
         // Credits redirect handler - 50% chance for each URL
         function handleCreditsClick() {
@@ -63,10 +63,65 @@
                 onRuntimeInitialized: function() { 
                     UnityProgress(gameInstance, "complete");
                     
+                    // Apply color filter to canvas after Unity loads
+                    setTimeout(function() {
+                        var canvas = document.querySelector('#gameContainer canvas');
+                        if (canvas) {
+                            canvas.classList.add('pink-filter');
+                        }
+                    }, 500);
+                    
+                    // Block unwanted Unity UI interactions
+                    setTimeout(function() {
+                        var canvas = document.querySelector('#gameContainer canvas');
+                        if (canvas) {
+                            // Intercept clicks on UI areas
+                            var originalClick = canvas.onclick;
+                            canvas.addEventListener('click', function(e) {
+                                var rect = canvas.getBoundingClientRect();
+                                var x = e.clientX - rect.left;
+                                var y = e.clientY - rect.top;
+                                var width = rect.width;
+                                var height = rect.height;
+                                
+                                // Block clicks in UI areas (adjust coordinates as needed)
+                                // Bottom-left area (feedback, download buttons)
+                                if (x < 300 && y > height - 60) {
+                                    e.stopPropagation();
+                                    e.preventDefault();
+                                    return false;
+                                }
+                                // Bottom-right area (more games, Y8 logo)
+                                if (x > width - 220 && y > height - 70) {
+                                    e.stopPropagation();
+                                    e.preventDefault();
+                                    return false;
+                                }
+                                // Top-right area (leaderboard, login)
+                                if (x > width - 280 && y < 60) {
+                                    e.stopPropagation();
+                                    e.preventDefault();
+                                    return false;
+                                }
+                            }, true);
+                        }
+                    }, 1000);
+                    
                     // Try to intercept Unity's SendMessage function
                     if (gameInstance && gameInstance.SendMessage) {
                         var originalSendMessage = gameInstance.SendMessage;
                         gameInstance.SendMessage = function(gameObject, methodName, value) {
+                            // Block leaderboard, login, feedback, download, more games
+                            if (methodName && (
+                                methodName.toLowerCase().includes('leaderboard') ||
+                                methodName.toLowerCase().includes('login') ||
+                                methodName.toLowerCase().includes('feedback') ||
+                                methodName.toLowerCase().includes('download') ||
+                                methodName.toLowerCase().includes('moregames') ||
+                                methodName.toLowerCase().includes('y8')
+                            )) {
+                                return; // Block these calls
+                            }
                             if (methodName && (methodName.toLowerCase().includes('credit') || methodName.toLowerCase().includes('credits'))) {
                                 handleCreditsClick();
                                 return;
@@ -100,6 +155,70 @@
         .closebtn:hover {
           color: black;
         }
+        
+        /* UI Element Hiding Overlays */
+        #gameContainer {
+            position: relative;
+        }
+        
+        /* Overlay to hide buttons and UI elements */
+        .ui-overlay {
+            position: absolute;
+            z-index: 9999;
+            pointer-events: auto;
+            background: transparent;
+        }
+        
+        /* Hide feedback button (typically bottom-left) */
+        .overlay-feedback {
+            bottom: 10px;
+            left: 10px;
+            width: 120px;
+            height: 40px;
+        }
+        
+        /* Hide download button (typically bottom-left, next to feedback) */
+        .overlay-download {
+            bottom: 10px;
+            left: 140px;
+            width: 150px;
+            height: 40px;
+        }
+        
+        /* Hide more games / Y8 logo (typically bottom-right) */
+        .overlay-moregames {
+            bottom: 10px;
+            right: 10px;
+            width: 200px;
+            height: 60px;
+        }
+        
+        /* Hide leaderboard (typically top-center or top-right) */
+        .overlay-leaderboard {
+            top: 10px;
+            right: 10px;
+            width: 150px;
+            height: 40px;
+        }
+        
+        /* Hide login (typically top-right) */
+        .overlay-login {
+            top: 10px;
+            right: 170px;
+            width: 100px;
+            height: 40px;
+        }
+        
+        /* Color filter to change green to light pastel pink */
+        #gameContainer canvas {
+            filter: hue-rotate(280deg) saturate(0.5) brightness(1.2);
+            /* This shifts green hues toward pink, reduces saturation, and brightens */
+        }
+        
+        /* Alternative: More aggressive color replacement */
+        .pink-filter {
+            filter: hue-rotate(300deg) saturate(0.6) brightness(1.3) contrast(0.9);
+        }
     </style>
 </head>
 
@@ -116,7 +235,14 @@ Drop a star on the repo if you enjoy.
         Want to play tetris? <a href="https://goldenn.dev/tetris/">Click here!</a>
     </div>
     <div class="webgl-content">
-        <div id="gameContainer" style="width: 100%; height: 100%; margin: 0;"></div>
+        <div id="gameContainer" style="width: 100%; height: 100%; margin: 0;">
+            <!-- Overlays to hide and block UI elements -->
+            <div class="ui-overlay overlay-feedback" onclick="event.stopPropagation(); return false;" onmousedown="event.stopPropagation(); return false;"></div>
+            <div class="ui-overlay overlay-download" onclick="event.stopPropagation(); return false;" onmousedown="event.stopPropagation(); return false;"></div>
+            <div class="ui-overlay overlay-moregames" onclick="event.stopPropagation(); return false;" onmousedown="event.stopPropagation(); return false;"></div>
+            <div class="ui-overlay overlay-leaderboard" onclick="event.stopPropagation(); return false;" onmousedown="event.stopPropagation(); return false;"></div>
+            <div class="ui-overlay overlay-login" onclick="event.stopPropagation(); return false;" onmousedown="event.stopPropagation(); return false;"></div>
+        </div>
     </div>
 </body>
 <!-- Flope game by y8 games, not me.-->
